@@ -1,0 +1,107 @@
+Estoque Matriz = 
+SWITCH (
+TRUE (),
+SELECTEDVALUE(DataMatriz[Índice]) <= 4 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 0, 
+CALCULATE(CALCULATE ([Saldo Inicial], DATEADD(Calendario[DataBase], -1, YEAR)),
+FILTER(Calendario, Calendario[Ano] = VALUE(SELECTEDVALUE(DataMatriz[Tipo])))
+),
+SELECTEDVALUE( DataMatriz[Índice] ) >= 5 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 0,
+CALCULATE(CALCULATE ([Saldo Inicial], DATEADD(Calendario[DataBase], -1, MONTH)),
+FILTER(Calendario, Calendario[MeseAno] = SELECTEDVALUE ( DataMatriz[Tipo]) )
+),
+SELECTEDVALUE(DataMatriz[Índice]) <= 3 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 8, 
+CALCULATE([Saldo Inicial],
+FILTER(Calendario, Calendario[Ano] = VALUE(SELECTEDVALUE(DataMatriz[Tipo])))
+),
+SELECTEDVALUE(DataMatriz[Índice]) = 4 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 8, 
+CALCULATE(CALCULATE (DIVIDE(SUM ( Saldo[CUSTO] ), 1000, 0), FILTER ( 'Calendario', 'Calendario'[DataBase] = MAX( 'Saldo'[DTRECEB] ) ) ),
+FILTER(Calendario, Calendario[Ano] = VALUE(SELECTEDVALUE(DataMatriz[Tipo])))
+),
+SELECTEDVALUE( DataMatriz[Índice] ) >= 5 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 8,
+CALCULATE([Saldo Inicial],
+FILTER(Calendario, Calendario[MeseAno] = SELECTEDVALUE ( DataMatriz[Tipo] ) )
+),
+SELECTEDVALUE( DataMatriz[Índice] ) <= 4 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 1,
+CALCULATE (ROUND(CALCULATE([Custo Mov], FILTER(Grupo, Grupo[GRUPO] = "01-Compra e Venda")), 2),
+FILTER(ALL(Calendario), Calendario[Ano] = VALUE(SELECTEDVALUE(DataMatriz[Tipo])))
+),
+SELECTEDVALUE( DataMatriz[Índice] ) >= 5 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 1,
+CALCULATE (ROUND(CALCULATE([Custo Mov], FILTER(Grupo, Grupo[GRUPO] = "01-Compra e Venda")), 2),
+FILTER (Calendario,Calendario[MeseAno] = SELECTEDVALUE ( DataMatriz[Tipo] ) )
+),
+SELECTEDVALUE( DataMatriz[Índice] ) <= 4 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 2,
+CALCULATE (CALCULATE([Custo Mov], FILTER(Grupo, Grupo[GRUPO] IN {"02-Baixa Processo", "03-Baixa Manual", "04-Inventário Geral", 
+"07-Industrialização", "07-Remessa Indl", "05-Outros Movim", "06-Custo Fixo"})),
+FILTER(Calendario, Calendario[Ano] = VALUE(SELECTEDVALUE(DataMatriz[Tipo])))
+),
+SELECTEDVALUE( DataMatriz[Índice] ) >= 5 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 2,
+CALCULATE (CALCULATE([Custo Mov], FILTER(Grupo, Grupo[GRUPO] IN {"02-Baixa Processo", "03-Baixa Manual", "04-Inventário Geral", 
+"07-Industrialização", "07-Remessa Indl", "05-Outros Movim", "06-Custo Fixo"})),
+FILTER (Calendario,Calendario[MeseAno] = SELECTEDVALUE ( DataMatriz[Tipo] ) )
+),
+SELECTEDVALUE( DataMatriz[Índice] ) <= 3 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 6,
+CALCULATE ([Saldo Inicial] - CALCULATE ([Saldo Inicial], DATEADD(Calendario[DataBase], -1, YEAR)) ,
+FILTER(Calendario, Calendario[Ano] = VALUE(SELECTEDVALUE(DataMatriz[Tipo])))
+),
+SELECTEDVALUE( DataMatriz[Índice] ) = 4 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 6,
+CALCULATE (CALCULATE (DIVIDE(SUM ( Saldo[CUSTO] ), 1000, 0), FILTER ( 'Calendario', 'Calendario'[DataBase] = MAX( 'Saldo'[DTRECEB] ) ) ) - CALCULATE ([Saldo Inicial], DATEADD(Calendario[DataBase], -1, YEAR)) ,
+FILTER(Calendario, Calendario[Ano] = VALUE(SELECTEDVALUE(DataMatriz[Tipo])))
+),
+SELECTEDVALUE( DataMatriz[Índice] ) >= 5 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 6,
+CALCULATE ([Saldo Inicial] - CALCULATE ([Saldo Inicial], DATEADD(Calendario[DataBase], -1, MONTH)),
+FILTER(Calendario, Calendario[MeseAno] = SELECTEDVALUE ( DataMatriz[Tipo] ) )
+),
+SELECTEDVALUE( DataMatriz[Índice] ) <= 3 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 3,
+CALCULATE (-(ROUND(CALCULATE([Custo Mov], FILTER(Grupo, Grupo[GRUPO] = "01-Compra e Venda")), 2)) - CALCULATE([Custo Mov], FILTER(Grupo, Grupo[GRUPO] IN {"02-Baixa Processo", "03-Baixa Manual", "04-Inventário Geral", "07-Industrialização", "07-Remessa Indl", "05-Outros Movim", "06-Custo Fixo"}))
++ ([Saldo Inicial] - CALCULATE ([Saldo Inicial], DATEADD(Calendario[DataBase], -1, YEAR))),
+FILTER(Calendario, Calendario[Ano] = VALUE(SELECTEDVALUE(DataMatriz[Tipo])))
+),
+SELECTEDVALUE( DataMatriz[Índice] ) = 4 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 3,
+CALCULATE (-(ROUND(CALCULATE([Custo Mov], FILTER(Grupo, Grupo[GRUPO] = "01-Compra e Venda")), 2)) - CALCULATE([Custo Mov], FILTER(Grupo, Grupo[GRUPO] IN {"02-Baixa Processo", "03-Baixa Manual", "04-Inventário Geral", "07-Industrialização", "07-Remessa Indl", "05-Outros Movim", "06-Custo Fixo"}))
++ (CALCULATE (DIVIDE(SUM ( Saldo[CUSTO] ), 1000, 0), FILTER ( 'Calendario', 'Calendario'[DataBase] = MAX( 'Saldo'[DTRECEB] ) ) ) - CALCULATE ([Saldo Inicial], DATEADD(Calendario[DataBase], -1, YEAR))),
+FILTER(Calendario, Calendario[Ano] = VALUE(SELECTEDVALUE(DataMatriz[Tipo])))
+),
+SELECTEDVALUE( DataMatriz[Índice] ) >= 5 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 3,
+CALCULATE (-(ROUND(CALCULATE([Custo Mov], FILTER(Grupo, Grupo[GRUPO] = "01-Compra e Venda")), 2)) - CALCULATE([Custo Mov], FILTER(Grupo, Grupo[GRUPO] IN {"02-Baixa Processo", "03-Baixa Manual", "04-Inventário Geral", "07-Industrialização", "07-Remessa Indl", "05-Outros Movim", "06-Custo Fixo"}))
++ [Saldo Inicial] - CALCULATE ([Saldo Inicial], DATEADD(Calendario[DataBase], -1, MONTH)),
+FILTER(Calendario, Calendario[MeseAno] = SELECTEDVALUE ( DataMatriz[Tipo] ) )
+),
+SELECTEDVALUE(DataMatriz[Índice]) <= 3 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 9, 
+CALCULATE(DIVIDE(([Saldo Inicial] - CALCULATE ([Saldo Inicial], DATEADD(Calendario[DataBase], -1, YEAR))), 
+CALCULATE ([Saldo Inicial], DATEADD(Calendario[DataBase], -1, YEAR))) ,
+FILTER(Calendario, Calendario[Ano] = VALUE(SELECTEDVALUE(DataMatriz[Tipo])))
+),
+SELECTEDVALUE(DataMatriz[Índice]) = 4 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 9, 
+CALCULATE(DIVIDE((CALCULATE (DIVIDE(SUM ( Saldo[CUSTO] ), 1000, 0), FILTER ( 'Calendario', 'Calendario'[DataBase] = MAX( 'Saldo'[DTRECEB] ) ) ) - 
+CALCULATE ([Saldo Inicial], DATEADD(Calendario[DataBase], -1, YEAR))), CALCULATE ([Saldo Inicial], DATEADD(Calendario[DataBase], -1, YEAR))),
+FILTER(Calendario, Calendario[Ano] = VALUE(SELECTEDVALUE(DataMatriz[Tipo])))
+),
+SELECTEDVALUE(DataMatriz[Índice]) >= 5 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 9, 
+CALCULATE(DIVIDE(([Saldo Inicial] - CALCULATE(CALCULATE ([Saldo Inicial], DATEADD(Calendario[DataBase], -1, MONTH)))), 
+CALCULATE(CALCULATE ([Saldo Inicial], DATEADD(Calendario[DataBase], -1, MONTH)))) ,
+FILTER(Calendario, Calendario[MeseAno] = SELECTEDVALUE ( DataMatriz[Tipo] ) )
+),
+SELECTEDVALUE( DataMatriz[Índice] ) <= 3 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 7,
+CALCULATE (DIVIDE(([Saldo Inicial] - CALCULATE ([Saldo Inicial], DATEADD(Calendario[DataBase], -1, YEAR))), 
+(CALCULATE (ROUND(CALCULATE([Custo Mov], FILTER(Grupo, Grupo[GRUPO] = "01-Compra e Venda")), 2)))) ,
+FILTER(Calendario, Calendario[Ano] = VALUE(SELECTEDVALUE(DataMatriz[Tipo])))
+),
+SELECTEDVALUE( DataMatriz[Índice] ) = 4 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 7,
+CALCULATE (DIVIDE((CALCULATE (DIVIDE(SUM ( Saldo[CUSTO] ), 1000, 0), FILTER ( 'Calendario', 'Calendario'[DataBase] = MAX( 'Saldo'[DTRECEB] ) ) ) - CALCULATE ([Saldo Inicial], DATEADD(Calendario[DataBase], -1, YEAR))),
+(CALCULATE (ROUND(CALCULATE([Custo Mov], FILTER(Grupo, Grupo[GRUPO] = "01-Compra e Venda")), 2)))) ,
+FILTER(Calendario, Calendario[Ano] = VALUE(SELECTEDVALUE(DataMatriz[Tipo])))
+),
+SELECTEDVALUE( DataMatriz[Índice] ) >= 5 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 7,
+CALCULATE(DIVIDE((CALCULATE ([Saldo Inicial] - CALCULATE ([Saldo Inicial], DATEADD(Calendario[DataBase], -1, MONTH)))), 
+(CALCULATE (ROUND(CALCULATE([Custo Mov], FILTER(Grupo, Grupo[GRUPO] = "01-Compra e Venda")), 2)))) ,
+FILTER(Calendario, Calendario[MeseAno] = SELECTEDVALUE ( DataMatriz[Tipo] ) )
+),
+SELECTEDVALUE( DataMatriz[Índice] ) <= 4 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 4,
+CALCULATE (DIVIDE( ROUND(CALCULATE([Custo Mov], FILTER(Grupo, Grupo[SUB_GRUPO] = "Sucata Processo")), 2), ROUND(CALCULATE([Custo Mov], FILTER(Grupo, Grupo[SUB_GRUPO] = "Baixa Processo")), 2)),
+FILTER(ALL(Calendario), Calendario[Ano] = VALUE(SELECTEDVALUE(DataMatriz[Tipo])))
+),
+SELECTEDVALUE( DataMatriz[Índice] ) >= 5 && SELECTEDVALUE(GrupoMovMatriz[Ordinal]) = 4,
+CALCULATE (DIVIDE( ROUND(CALCULATE([Custo Mov], FILTER(Grupo, Grupo[SUB_GRUPO] = "Sucata Processo")), 2), ROUND(CALCULATE([Custo Mov], FILTER(Grupo, Grupo[SUB_GRUPO] = "Baixa Processo")), 2)),
+FILTER (Calendario,Calendario[MeseAno] = SELECTEDVALUE ( DataMatriz[Tipo] ) )
+)
+)
