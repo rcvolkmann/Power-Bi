@@ -116,9 +116,9 @@
                     Feriado = text 
                 ], 
                 { 
-                    { Date.AddDays(pascoa, -48 ), "Segunda-feira de Carnaval"  }, 
-                    { Date.AddDays(pascoa, -47 ), "Terça-feira de Carnaval"    }, 
-                    { Date.AddDays(pascoa, -46 ), "Quarta-feira de Cinzas"     }, 
+                    //{ Date.AddDays(pascoa, -48 ), "Segunda-feira de Carnaval"  }, 
+                    //{ Date.AddDays(pascoa, -47 ), "Terça-feira de Carnaval"    }, 
+                    //{ Date.AddDays(pascoa, -46 ), "Quarta-feira de Cinzas"     }, 
                     { Date.AddDays(pascoa, -2  ), "Sexta-Feira Santa"          }, 
                     { pascoa                    , "Páscoa"                     }, 
                     { Date.AddDays(pascoa, 60  ), "Corpus Christi"             } 
